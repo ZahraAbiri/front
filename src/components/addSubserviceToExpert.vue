@@ -3,7 +3,7 @@
     <vs-table
         search
         dir="rtl"
-        :data="subService"
+        :data="subServices"
         style="background-color: #c6f7ff"
     >
       <template slot="thead" style="">
@@ -45,20 +45,20 @@
 
     </vs-table>
     <input type="text" v-model="expert.firstname" placeholder="Enter your name" required>
-
+<vs-button @click="saveexpert"></vs-button>
   </div>
 </template>
 
 <script>
 
-import SubServicerDataService from "@/service/SubServicerDataService";
+import SubServiceDataService from "@/service/SubServicerDataService";
 import ExpertDataService from "@/service/ExpertDataService";
 
 export default {
   name: "addSubserviceTosubservice",
   data() {
     return {
-      subService:[],
+      subServices:[],
       subservice: {
         id:null,
         name: '',
@@ -84,7 +84,8 @@ export default {
     }
   }, methods: {
     saveexpert() {
-      this.expert.subService=[{id:this.subService[0].id,name:this.subService[0].name,basePrice: this.subService[0].basePrice,description: this.subService[0].description}]
+      this.expert.services=[{id:this.subService[0].id,name:this.subService[0].name,
+        basePrice: this.subService[0].basePrice,description: this.subService[0].description}]
       console.log("errorpppppppppppppp");
       var data = {
         firstname: this.expert.firstname,
@@ -112,7 +113,7 @@ export default {
           });
     },
     getAllsubservice() {
-      SubServicerDataService.getSubService.then((response) => {
+      SubServiceDataService.getSubService.then((response) => {
         this.subService = response.data;
         console.log(JSON.stringify(response) + "--------")
       });
