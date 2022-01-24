@@ -51,18 +51,27 @@ export default {
       menu:{
         id:null,
         name:'',
-        subServices:''
+        // subServices:''
+        // subServices: {
+        //   name: '',
+        //   basePrice:'',
+        //   description:'',
+        // },
       },
-      subServicess:[
-
-      ],
+      // subServicess: {
+      //   name: '',
+      //   basePrice:'',
+      //   description:'',
+      // },
       menus: [{
-
+id:1,name:'test'
       }],
     }
   },methods:{
     getmService() {
+      console.log("get menue")
       MainServiceDataService.getMainService().then((response) => {
+        console.log("2222")
         this.menus = response.data;
         console.log(JSON.stringify(response) + "--------")
       });
@@ -71,7 +80,7 @@ export default {
   },
   computed: {
     filter1() {
-      return this.menus.slice(0, 5);
+      return this.menus.slice(1, 5);
     },
     filter2() {
       return this.menus.slice(5, 10);

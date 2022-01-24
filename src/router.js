@@ -41,6 +41,12 @@ export default new Router({
             alias: "/",
             name: "",
             component: () => import("./components/CustomerFilter")
+        },{
+
+            path: "/add",
+            alias: "/",
+            name: "",
+            component: () => import("./components/addSubserviceToExpert")
         },
 
     ]
