@@ -29,7 +29,7 @@
             </div>
             <div class="input-box">
               <span class="details">Password</span>
-              <input type="text" placeholder="Enter your password" required>
+              <input type="text" v-model="manager.password" placeholder="Enter your password" required>
             </div>
           </div>
           <div class="gender-details">

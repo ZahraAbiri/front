@@ -24,28 +24,45 @@
               <span class="details">emailAddress</span>
               <input type="text" v-model="expert.emailAddress" placeholder="Enter your username" required>
             </div>
-            <div class="input-box">
-              <span class="details">password</span>
-              <input type="text" v-model="expert.password" placeholder="Enter your username" required>
-            </div>
+<!--            <div class="input-box">-->
+<!--              <span class="details">password</span>-->
+<!--              <input type="text" v-model="expert.password" placeholder="Enter your username" required>-->
+<!--            </div>-->
             <div class="input-box">
               <span class="details">credit</span>
               <input type="text" v-model="expert.credit" placeholder="Enter your username" required>
-            </div><div class="input-box">
-              <span class="details">personal statuse</span>
-              <input type="text" v-model="expert.personStatuse" placeholder="Enter your username" required>
             </div>
+<!--            <div class="input-box">-->
+<!--              <span class="details">personal statuse</span>-->
+<!--              <input type="text" v-model="expert.personStatuse" placeholder="Enter your username" required>-->
+<!--            </div>-->
             <div class="input-box">
-              <span class="details">role</span>
-              <input type="text" v-model="expert.role" placeholder="Enter your username" required>
+              <span class="details">score</span>
+              <input type="text" v-model="expert.score" placeholder="Enter your username" required>
             </div>
+<!--            <div class="input-box">-->
+<!--              <span class="details">role</span>-->
+<!--              <input type="text" v-model="expert.role" placeholder="Enter your username" required>-->
+<!--            </div>-->
             <div class="input-box">
               <span class="details">registrationDate</span>
               <date-picker v-model="expert.registrationDate" format="jYYYY-jMM-jDD" display-format="jYYYY-jMM-jDD" required></date-picker>
             </div>
             <div class="input-box">
               <span class="details">photo upload</span>
-              <ImgSave3 @changephoto="ChangeImg"  required></ImgSave3>
+<!--              <ImgSave3 @changephoto="ChangeImg"  v-model="expert.photo" required></ImgSave3>-->
+              <div class="row">
+                <div class="col-8">
+                  <label class="btn btn-default p-0">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref="file"
+                        @change="selectImage"
+                    />
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="button">
@@ -62,17 +79,26 @@
 </template>
 <script>
 import ExpertDataService from "@/service/ExpertDataService";
-import ImgSave3 from '../components/ImgSave3'
+// import ImgSave3 from '../components/ImgSave3'
 import VuePersianDatetimePicker from 'vue-persian-datetime-picker';
 export default {
   name: 'expertRegister',
   components:{
-    ImgSave3,
+    // ImgSave3,
     datePicker: VuePersianDatetimePicker
   },
   data() {
     return {
+      value: 54,
+      currentStep: null,
+
+      message: '',
+      currentImage: undefined,
+      previewImage: undefined,
+      prototype: 0,
+      imageInfoes: [],
       experts: [],
+      bt: [],
       expert: {
         id: null,
         firstname: "",
@@ -85,34 +111,68 @@ export default {
         photo:Array,
         score:null,
         role:null,
-        services:'',
+        // services:'',
 
       },
     }
   },methods:{
-    ChangeImg(mes) {
-      console.log(mes);
-      console.log(mes + "change 88photo");
+    // ChangeImg(mes) {
+    //   console.log(mes);
+    //   console.log(mes + "change 88photo");
+    //
+    //   this.expert.photo = mes
+    // },
+    selectImage() {
+      this.currentImage = this.$refs.file.files.item(0);
+      this.previewImage = URL.createObjectURL(this.currentImage);
+      this.progress = 0;
+      this.message = "";
+      let formData = new FormData();
+      formData.append("file", this.currentImage);
+      console.log("formData")
+      // console.log(formData)
+      var reader = new FileReader();
+      var filebyteArray = [];
+      reader.readAsArrayBuffer(this.currentImage)
+      reader.onloadend = function (evt) {
+        if (evt.target.readyState == FileReader.DONE) {
+          var arrayBufer = evt.target.result;
+          let array = new Uint8Array(arrayBufer)
+          for (var i = 0; i < array.length; i++) {
+            filebyteArray.push(array[i])
+          }
+        // return filebyteArray;
+        //   this.expert.photo=filebyteArray
+          // console.log(this.expert.photo)
+          this.bt=filebyteArray
+          console.log(filebyteArray)
+        }
 
-      this.expert.photo = mes
+      }
+
+      // this.$emit('changeImage', filebyteArray)
+
     },
     saveexpert() {
+      this.selectImage();
+      console.log()
       console.log("errorpppppppppppppp");
+
       var data = {
         firstname: this.expert.firstname,
         lastname: this.expert.lastname,
         emailAddress: this.expert.emailAddress,
-        password: this.expert.password,
-        personStatuse: this.expert.personStatuse,
+        // password: this.expert.password,
+        personStatuse: 'NEW',
         registrationDate: this.expert.registrationDate,
         credit: this.expert.credit,
         photo:this.expert.photo,
-        role:this.expert.role,
+        role:'EXPERT',
         score: this.expert.score,
-        services: this.expert.services
+        // services: this.expert.services
 
       };
-      console.log(data.firstname + "dllllllllllllllllllllata")
+      console.log(data.photo + "dllllllllllllllllllllata")
       ExpertDataService.createExpert(data).then(response => {
         console.log("wwwwww")
         this.expert.id = response.data.id;

@@ -2,35 +2,33 @@ import http from "../http-common";
 
 class CustomerDataService {
     getCustomer(){
-        return http.get("api/v1/employees");
+        return http.get("");
     }
     getAllCustomer() {
         return http.get("cus/custom");
     }
 
     getCustomerById(id) {
-        return http.get(`api/v1/employeees/${id}`);
+        return http.get(`/${id}`);
     }
 
     createCustomer(data) {
-
-        // return ("http://localhost:8080/cus/customers", data);
-        return http.get(`/cu`, data);
+        return http.post(`cus/cu`, data);
     }
 
 
     updateCustomer(id, data) {
         console.log("update : "+id+"data : "+data);
-        return http.put(`api/v1/employees/${id}`,data);
+        return http.put(`/${id}`,data);
     }
 
     deleteCustomer(id) {
         console.log("id@@@@@@@" + id);
-        return http.delete(`api/v1/employees/${id}`);
+        return http.delete(`/${id}`);
     }
 
     deleteAllCustomer() {
-        return http.delete(`api/v1/employeesDelete`);
+        return http.delete(``);
     }
 
 }

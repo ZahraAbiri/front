@@ -4,23 +4,25 @@
 
       <div class="hex-wrapper">
         <div class="hex-row shift">
-                  <div class="hexagon"  v-for="menu in filter1" :key="menu.id" id="nav-home">
-                    {{ menu.name }}
-                    <div class="face1"></div>
-                    <div class="face2"></div>
-                  </div>
-        </div>
-        <div class="hex-row">
-          <div class="hexagon" v-for="menu in filter2" :key="menu.id" id="nav-about">
-            {{ menu.name }}
+
+
+          <div class="hexagon"  :mainservices="tr" :key="mainserviceid" v-for="(tr, mainserviceid) in mainservice" id="nav-home">
+            {{ mainservice[mainserviceid].name }}
             <div class="face1"></div>
             <div class="face2"></div>
           </div>
-<!--          <div class="hexagon" v-for="menu in filter2" :key="menu.id" id="nav-work">-->
-<!--            {{ menu.faTitle }}-->
-<!--            <div class="face1"></div>-->
-<!--            <div class="face2"></div>-->
-<!--          </div>-->
+        </div>
+        <div class="hex-row">
+          <div class="hexagon" v-for="mainservice in filter2" :key="mainservice.id" id="nav-about">
+            {{ mainservice.name }}
+            <div class="face1"></div>
+            <div class="face2"></div>
+          </div>
+          <!--          <div class="hexagon" v-for="menu in filter2" :key="menu.id" id="nav-work">-->
+          <!--            {{ menu.faTitle }}-->
+          <!--            <div class="face1"></div>-->
+          <!--            <div class="face2"></div>-->
+          <!--          </div>-->
         </div>
         <div class="hex-row shift">
           <div class="hexagon" id="nav-contact">
@@ -48,31 +50,21 @@ export default {
   data() {
     return {
 
-      menu:{
-        id:null,
-        name:'',
-        // subServices:''
-        // subServices: {
-        //   name: '',
-        //   basePrice:'',
-        //   description:'',
-        // },
+      mainservice: {
+        id: null,
+        name: '',
+
       },
-      // subServicess: {
-      //   name: '',
-      //   basePrice:'',
-      //   description:'',
-      // },
-      menus: [{
-id:1,name:'test'
-      }],
+
+      mainservices: [
+      ],
     }
-  },methods:{
+  }, methods: {
     getmService() {
       console.log("get menue")
       MainServiceDataService.getMainService().then((response) => {
         console.log("2222")
-        this.menus = response.data;
+        this.mainservices = response.data;
         console.log(JSON.stringify(response) + "--------")
       });
     },
@@ -80,12 +72,14 @@ id:1,name:'test'
   },
   computed: {
     filter1() {
-      return this.menus.slice(1, 5);
+      this.mainservices.slice(1, 4).forEach(i=>console.log(i.name))
+      return this.mainservices.slice(1, 4).forEach(i=>i.name);
     },
     filter2() {
-      return this.menus.slice(5, 10);
+      this.mainservices.slice(4, 8).forEach(i=>console.log(i.name))
+      return this.mainservices.slice(4, 8);
     }
-  },  created() {
+  }, created() {
 
     this.getmService();
 

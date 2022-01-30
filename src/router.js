@@ -7,12 +7,12 @@ export default new Router({
     mode: "history",
     routes: [
         {
-            path: "/",
+            path: "/man",
             alias: "/",
             name: "",
 
             component: () => import("./components/ManagerRegister")
-        },  {
+        }, {
 
             path: "/m",
             alias: "/",
@@ -23,30 +23,86 @@ export default new Router({
             alias: "/",
             name: "",
             component: () => import("./components/SubserviceTable")
-        },{
+        }, {
 
             path: "/main",
             alias: "/",
             name: "",
             component: () => import("./components/MainService")
-        },{
+        }, {
 
             path: "/exp",
             alias: "/",
             name: "",
             component: () => import("./components/Expert")
-        },{
+        }, {
 
             path: "/cusfil",
             alias: "/",
             name: "",
             component: () => import("./components/CustomerFilter")
-        },{
+        }, {
+
+            path: "/cu",
+            alias: "/",
+            name: "",
+            component: () => import("./components/CustomerRegister")
+        }, {
 
             path: "/add",
             alias: "/",
             name: "",
             component: () => import("./components/addSubserviceToExpert")
+        },
+        {
+
+            path: "/login",
+            alias: "/",
+            name: "",
+            component: () => import("./components/LoginPage")
+        },
+        {
+
+            path: "/fff",
+            alias: "/",
+            name: "",
+            component: () => import("./components/FormInput")
+        }, {
+
+            path: "/addms",
+            alias: "/",
+            name: "",
+            component: () => import("./components/addMainserviceandsubservice")
+        }, {
+
+            path: "/mslider",
+            alias: "/",
+            name: "",
+            component: () => import("./components/sidebar")
+        }, {
+
+            path: "/efil",
+            alias: "/",
+            name: "",
+            component: () => import("./components/ExpertFilter")
+        }, {
+
+            path: "/suex",
+            alias: "/",
+            name: "",
+            component: () => import("./components/selectsubserviceByExpert")
+        }, {
+
+            path: "/cohis",
+            alias: "/",
+            name: "",
+            component: () => import("./components/CustomerSeeOrderHistory")
+        }, {
+
+            path: "/exhis",
+            alias: "/",
+            name: "",
+            component: () => import("./components/ExpertSeeOrderHistory")
         },
 
     ]

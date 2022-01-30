@@ -7,22 +7,27 @@
                   primary
                   color="rgb(59,222,200)"
                   required
+                  placeholder="name"
                   multiple
                   :data="customers"
                   v-model="filterName"
-                  placeholder="filterName"
+                  label-placeholder="filterName"
                   :maxlength="12"></vs-input>
         <vs-input type="text" style=" margin-right: 10%; width: 40%"
                   primary
+                  placeholder="family"
                   color="rgb(59,222,200)"
                   required
                   multiple
                   search
                   :data="customers"
                   v-model="filterFamily"
-                  placeholder="filterFamily"
+                  label-placeholder="filterFamily"
                   :maxlength="12"></vs-input>
+
       </div>
+
+
       <div style="width:50%;float:left">
         <vs-input type="text"
                   style="margin-top:10%;margin-right: 50%; width: 40%"
@@ -32,44 +37,42 @@
                   multiple
                   search
                   :data="customers"
+
                   v-model="filterRole"
-                  placeholder="filterRole"
-                  label-placeholder="E"
+                  placeholder="role"
+                  label-placeholder="role"
                   :maxlength="12">
         </vs-input>
-        <vs-input
-            type="text" style="margin-right: 50%; width: 40%"
-            primary
-            color="rgb(59,222,200)"
-            required
-            multiple
-            search
-            :data="customers"
-            v-model="filterEmail"
-            placeholder="email"
-            label-placeholder="filterEmail"
-            :maxlength="12">
+        <vs-input type="text"
+                  style="margin-right: 50%; width: 40%"
+                  primary
+                  color="rgb(59,222,200)"
+                  required
+                  multiple
+                  search
+                  :data="customers"
+                  v-model="filterEmail"
+                  label-placeholder="Email"
+                  :maxlength="12"></vs-input>
 
-        </vs-input>
       </div>
-      <vs-button  @click="showAll();poping()" >show</vs-button>
+      <div style="text-align: center">
+        <vs-button v-if="filterName||filterEmail||filterFamily||filterRole " @click="search()"
+                   style="margin-right: 1%"> search
+        </vs-button>
 
-          <vs-button v-if="filterName||filterEmail||filterFamily||filterRole " @click="search()"
-                     style="margin-right: 1%"> search
-          </vs-button>
+        <vs-button
+            v-if="filterName===customer.firstname && filterFamily===customer.lastname && filterEmail===customer.emailAddress && filterRole===customer.role"
+            @click="showAll();poping()" style="margin-right: 1%"> searchall
+        </vs-button>
 
-          <vs-button
-              v-if="filterName===customer.firstname && filterFamily===customer.lastname && filterEmail===customer.email
-                 || filterRole===customer.role"
-              @click="showAll();poping()" style="margin-right: 1%"> searchall
-          </vs-button>
-
-<!--        </div>-->
-<!--      </div>-->
+      </div>
 
       <div style="width: 80%;margin-right: 10%">
         <vs-table v-if="num===1"
                   dir="rtl"
+                  pagination
+                  max-items="3"
                   search
                   :data="customersa"
                   style="background-color: #c6f7ff"
@@ -82,11 +85,12 @@
               family
             </vs-th>
             <vs-th sort-key="emailAddress" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
-              email
+              emailAddress
             </vs-th>
             <vs-th sort-key="role" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
               role
             </vs-th>
+
           </template>
           <template slot-scope="{data : customer}" class="td">
             <vs-tr :customers="tr" :key="customerid" v-for="(tr, customerid) in customer">
@@ -119,7 +123,8 @@
       </div>
       <div style="width: 80%;margin-right: 10%">
         <vs-table v-if="num===2"
-                  search
+                  pagination
+                  max-items="3"
                   dir="rtl"
                   :data="customers"
                   style="background-color: #c6f7ff"
@@ -132,7 +137,7 @@
               family
             </vs-th>
             <vs-th sort-key="emailAddress" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
-              email
+              emailAddress
             </vs-th>
             <vs-th sort-key="role" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
               role
@@ -179,101 +184,154 @@
 </template>
 
 <script>
+
+
 import CustomerDataService from "@/service/CustomerDataService";
 
 export default {
-  name: "CustomerFilter",
+
+  name: "FormInput",
+  components: {},
   data() {
     return {
-      num: 0,
+      Array: [],
       selected: [],
       customersa: [],
-      filterName: '',
-      filterFamily: '',
-      filterEmail: '',
-      filterRole: '',
-      customers: [],
+      customers: [
+        // {id: 1, firstname: 'sara', lastname: 'mohamadi', emailAddress: 'sara@g.com'},
+        //   {id: 2, firstname: 'tara', lastname: 'ahmadi', emailAddress: 'tara@g.com'},
+        //   {id: 3, firstname: 'sara', lastname: 'asad', emailAddress: 'sara@g.com'},
+        //   {id: 4, firstname: 'yasi', lastname: 'moradi', emailAddress: 'yasi@g.com'}
+      ],
       customer: {
         id: null,
         firstname: "",
         lastname: "",
         emailAddress: "",
-        password: '',
-        personStatuse: '',
-        registrationDate: Date(),
-        credit: '',
+        role: ''
       },
+      num: 0,
+      a: 3,
+      filterName: '',
+      filterFamily: '',
+      filterEmail: '',
+      filterRole: '',
     }
-  },
-  methods: {
+  }, methods: {
     getAllcustomer() {
       CustomerDataService.getAllCustomer().then((response) => {
         this.customers = response.data;
         console.log(JSON.stringify(response) + "--------")
       });
-    }, customerFilter() {
-      console.log(this.customers.filter(i => i.firstname === this.filterName)+"lllllll")
+    },
+    adding() {
+      this.Array.add('sa');
+      console.log(Array.length);
+    },
+
+    customersFilter() {
       return this.customers.filter(i => i.firstname === this.filterName);
 
 
-    }, customerFilterFullName() {
+    }, customersFilterFullName() {
       return this.customers.filter(i => i.firstname === this.filterName && i.lastname === this.filterFamily);
 
 
     }
-    , customerFamily() {
+    , customersFamily() {
       return this.customers.filter(i => i.lastname === this.filterFamily)
-    }, customerEmail() {
+    }, customersRole() {
+      return this.customers.filter(i => i.role === this.filterRole)
+    }, customersEmail() {
 
       return this.customers.filter(i => i.emailAddress === this.filterEmail)
-
-    }, customerRole() {
-
-      return this.customers.filter(i => i.role === this.filterRole)
 
     }, showAll() {
       this.num = 2;
       this.poping();
-      this.customera.push(this.customers.forEach());
+      this.customersa.push(this.customers.forEach());
 
 
     },
     search() {
       this.poping();
-
+      // this.showAll();
 
       if (this.filterName && this.filterFamily) {
-        var r = this.customerFilterFullName();
-        r.forEach(r => this.customera.push(r));
+        var r = this.customersFilterFullName();
+        r.forEach(r => this.customersa.push(r));
       } else if (this.filterName) {
-        var x = this.customerFilter();
-        x.forEach(x => this.customera.push(x));
+        var x = this.customersFilter();
+        x.forEach(x => this.customersa.push(x));
       } else if (this.filterFamily) {
-        var y = this.customerFamily();
-        y.forEach(y => this.customera.push(y));
+        var y = this.customersFamily();
+        y.forEach(y => this.customersa.push(y));
 
       } else if (this.filterEmail) {
-        if (this.customerFilter() !== this.customer.firstname)
-          var z = this.customerEmail();
-        z.forEach(z => this.customera.push(z));
+        // this.poping();
+        if (this.customersFilter() !== this.customer.firstname)
+          var z = this.customersEmail();
+        z.forEach(z => this.customersa.push(z));
+      } else if (this.filterRole) {
+        // this.poping();
+        if (this.customersFilter() !== this.customer.firstname)
+          var w = this.customersRole();
+        w.forEach(w => this.customersa.push(w));
       }
-      // else if (this.filterRole) {
-      //   if (this.customerFilter() !== this.customer.firstname)
-      //     var d = this.customerRole();
-      //   d.forEach(d => this.customera.push(d));
-      // }
       this.num = 1;
-      return this.customera = [...new Set(this.customera)];
+      return this.customersa = [...new Set(this.customersa)];
+
+
     }, poping() {
-      this.customera = [];
+      this.customersa = [];
+
     }
-  }, created() {
+  }
+  , created() {
     this.getAllcustomer();
 
-  }
+  },
+  computed: {},
+
+
 }
+
+
 </script>
 
 <style scoped>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 
+body {
+  background-color: #7c7bcc !important;
+
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 480px;
+  margin-left: 10%;
+  margin-right: 10%;
+
+}
+
+.testdiv {
+  width: 40px;
+  height: 25px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input:required:invalid {
+  border-color: red;
+}
 </style>

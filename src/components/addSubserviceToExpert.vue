@@ -60,10 +60,11 @@ export default {
     return {
       subServices:[],
       subservice: {
-        id:null,
+        id: null,
         name: '',
-        basePrice:'',
-        description:'',
+        basePrice: '',
+        description: '',
+      },
         experts: [],
         expert: {
           id: null,
@@ -72,16 +73,15 @@ export default {
           emailAddress: "",
           password: '',
           personStatuse: '',
-          registrationDate:null,
+          registrationDate: null,
           credit: '',
-          photo:Array,
-          score:null,
-          role:null,
-          services:'',
-
+          photo: Array,
+          score: null,
+          role: null,
+          services: '',
         },
-      },
-    }
+      }
+
   }, methods: {
     saveexpert() {
       this.expert.services=[{id:this.subService[0].id,name:this.subService[0].name,

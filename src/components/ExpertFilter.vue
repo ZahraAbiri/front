@@ -7,22 +7,27 @@
                   primary
                   color="rgb(59,222,200)"
                   required
+                  placeholder="name"
                   multiple
                   :data="experts"
                   v-model="filterName"
-                  placeholder="filterName"
+                  label-placeholder="filterName"
                   :maxlength="12"></vs-input>
         <vs-input type="text" style=" margin-right: 10%; width: 40%"
                   primary
+                  placeholder="family"
                   color="rgb(59,222,200)"
                   required
                   multiple
                   search
                   :data="experts"
                   v-model="filterFamily"
-                  placeholder="filterFamily"
+                  label-placeholder="filterFamily"
                   :maxlength="12"></vs-input>
+
       </div>
+
+
       <div style="width:50%;float:left">
         <vs-input type="text"
                   style="margin-top:10%;margin-right: 50%; width: 40%"
@@ -32,44 +37,42 @@
                   multiple
                   search
                   :data="experts"
-                  v-model="filterRole"
-                  placeholder="filterRole"
-                  label-placeholder="E"
+
+                  v-model="filterscore"
+                  placeholder="score"
+                  label-placeholder="score"
                   :maxlength="12">
         </vs-input>
-        <vs-input
-            type="text" style="margin-right: 50%; width: 40%"
-            primary
-            color="rgb(59,222,200)"
-            required
-            multiple
-            search
-            :data="experts"
-            v-model="filterEmail"
-            placeholder="email"
-            label-placeholder="filterEmail"
-            :maxlength="12">
+        <vs-input type="text"
+                  style="margin-right: 50%; width: 40%"
+                  primary
+                  color="rgb(59,222,200)"
+                  required
+                  multiple
+                  search
+                  :data="experts"
+                  v-model="filterEmail"
+                  label-placeholder="Email"
+                  :maxlength="12"></vs-input>
 
-        </vs-input>
       </div>
-      <vs-button  @click="showAll();poping()" >show</vs-button>
+      <div style="text-align: center">
+        <vs-button v-if="filterName||filterEmail||filterFamily||filterscore " @click="search()"
+                   style="margin-right: 1%"> search
+        </vs-button>
 
-      <vs-button v-if="filterName||filterEmail||filterFamily||filterRole " @click="search()"
-                 style="margin-right: 1%"> search
-      </vs-button>
+        <vs-button
+            v-if="filterName===expert.firstname && filterFamily===expert.lastname && filterEmail===expert.emailAddress && filterscore===expert.score"
+            @click="showAll();poping()" style="margin-right: 1%"> searchall
+        </vs-button>
 
-      <vs-button
-          v-if="filterName===expert.firstname && filterFamily===expert.lastname && filterEmail===expert.email
-                 || filterRole===expert.role"
-          @click="showAll();poping()" style="margin-right: 1%"> searchall
-      </vs-button>
-
-      <!--        </div>-->
-      <!--      </div>-->
+      </div>
 
       <div style="width: 80%;margin-right: 10%">
         <vs-table v-if="num===1"
                   dir="rtl"
+                  pagination
+                  max-items="3"
                   search
                   :data="expertsa"
                   style="background-color: #c6f7ff"
@@ -82,11 +85,12 @@
               family
             </vs-th>
             <vs-th sort-key="emailAddress" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
-              email
+              emailAddress
             </vs-th>
-            <vs-th sort-key="role" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
-              role
+            <vs-th sort-key="score" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
+              score
             </vs-th>
+
           </template>
           <template slot-scope="{data : expert}" class="td">
             <vs-tr :experts="tr" :key="expertid" v-for="(tr, expertid) in expert">
@@ -106,7 +110,7 @@
               </vs-td>
               <vs-td style="background-image: linear-gradient(#a9ded5, #5abbf9);;font-size: large"
                      dir="rtl">
-                {{ expert[expertid].role }}
+                {{ expert[expertid].score }}
               </vs-td>
 
 
@@ -119,7 +123,8 @@
       </div>
       <div style="width: 80%;margin-right: 10%">
         <vs-table v-if="num===2"
-                  search
+                  pagination
+                  max-items="3"
                   dir="rtl"
                   :data="experts"
                   style="background-color: #c6f7ff"
@@ -132,10 +137,10 @@
               family
             </vs-th>
             <vs-th sort-key="emailAddress" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
-              email
+              emailAddress
             </vs-th>
-            <vs-th sort-key="role" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
-              role
+            <vs-th sort-key="score" style="font-size: x-large ; background-color: #c6f7ff" dir="rtl">
+              score
             </vs-th>
 
           </template>
@@ -157,7 +162,7 @@
               </vs-td>
               <vs-td style="background-image: linear-gradient(#a9ded5, #5abbf9);font-size: large"
                      dir="rtl">
-                {{ expert[expertid].role }}
+                {{ expert[expertid].score }}
               </vs-td>
 
 
@@ -179,101 +184,150 @@
 </template>
 
 <script>
-import expertDataService from "@/service/expertDataService";
+
+
+import ExpertDataService from "@/service/ExpertDataService";
 
 export default {
-  name: "expertFilter",
+
+  name: "FormInput",
+  components: {},
   data() {
     return {
-      num: 0,
+      Array: [],
       selected: [],
       expertsa: [],
-      filterName: '',
-      filterFamily: '',
-      filterEmail: '',
-      filterRole: '',
-      experts: [],
+      experts: [
+      ],
       expert: {
         id: null,
         firstname: "",
         lastname: "",
         emailAddress: "",
-        password: '',
-        personStatuse: '',
-        registrationDate: Date(),
-        credit: '',
+        score:''
       },
+      num: 0,
+      a: 3,
+      filterName: '',
+      filterFamily: '',
+      filterEmail: '',
+      filterscore: '',
     }
-  },
-  methods: {
+  }, methods: {
     getAllexpert() {
-      expertDataService.getAllexpert().then((response) => {
+      ExpertDataService.getAllexperts().then((response) => {
         this.experts = response.data;
         console.log(JSON.stringify(response) + "--------")
       });
-    }, expertFilter() {
-      console.log(this.experts.filter(i => i.firstname === this.filterName)+"lllllll")
+    },
+    adding() {
+      this.Array.add('sa');
+      console.log(Array.length);
+    },
+
+    expertsFilter() {
       return this.experts.filter(i => i.firstname === this.filterName);
 
 
-    }, expertFilterFullName() {
+    }, expertsFilterFullName() {
       return this.experts.filter(i => i.firstname === this.filterName && i.lastname === this.filterFamily);
 
 
     }
-    , expertFamily() {
+    , expertsFamily() {
       return this.experts.filter(i => i.lastname === this.filterFamily)
-    }, expertEmail() {
+    }, expertsscore() {
+      return this.experts.filter(i => i.score === this.filterscore)
+    }, expertsEmail() {
 
       return this.experts.filter(i => i.emailAddress === this.filterEmail)
-
-    }, expertRole() {
-
-      return this.experts.filter(i => i.role === this.filterRole)
 
     }, showAll() {
       this.num = 2;
       this.poping();
-      this.experta.push(this.experts.forEach());
+      this.expertsa.push(this.experts.forEach());
 
 
     },
     search() {
       this.poping();
-
+      // this.showAll();
 
       if (this.filterName && this.filterFamily) {
-        var r = this.expertFilterFullName();
-        r.forEach(r => this.experta.push(r));
+        var r = this.expertsFilterFullName();
+        r.forEach(r => this.expertsa.push(r));
       } else if (this.filterName) {
-        var x = this.expertFilter();
-        x.forEach(x => this.experta.push(x));
+        var x = this.expertsFilter();
+        x.forEach(x => this.expertsa.push(x));
       } else if (this.filterFamily) {
-        var y = this.expertFamily();
-        y.forEach(y => this.experta.push(y));
+        var y = this.expertsFamily();
+        y.forEach(y => this.expertsa.push(y));
 
       } else if (this.filterEmail) {
-        if (this.expertFilter() !== this.expert.firstname)
-          var z = this.expertEmail();
-        z.forEach(z => this.experta.push(z));
+        // this.poping();
+        if (this.expertsFilter() !== this.expert.firstname)
+          var z = this.expertsEmail();
+        z.forEach(z => this.expertsa.push(z));
+      } else if (this.filterscore) {
+        // this.poping();
+        if (this.expertsFilter() !== this.expert.firstname)
+          var w = this.expertsscore();
+        w.forEach(w => this.expertsa.push(w));
       }
-      // else if (this.filterRole) {
-      //   if (this.expertFilter() !== this.expert.firstname)
-      //     var d = this.expertRole();
-      //   d.forEach(d => this.experta.push(d));
-      // }
       this.num = 1;
-      return this.experta = [...new Set(this.experta)];
+      return this.expertsa = [...new Set(this.expertsa)];
+
+
     }, poping() {
-      this.experta = [];
+      this.expertsa = [];
+
     }
-  }, created() {
+  }
+  , created() {
     this.getAllexpert();
 
-  }
+  },
+  computed: {},
+
+
 }
+
+
 </script>
 
 <style scoped>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 
+body {
+  background-color: #7c7bcc !important;
+
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 480px;
+  margin-left: 10%;
+  margin-right: 10%;
+
+}
+
+.testdiv {
+  width: 40px;
+  height: 25px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input:required:invalid {
+  border-color: red;
+}
 </style>

@@ -143,7 +143,7 @@ export default {
         emailAddress: "",
         password: '',
         personStatuse: '',
-        registrationDate: Date(),
+        registrationDate: '',
         credit: '',
 
       },
