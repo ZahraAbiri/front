@@ -44,6 +44,9 @@ import {BCollapse} from 'bootstrap-vue'
 import {BCard} from 'bootstrap-vue'
 import {BButton} from 'bootstrap-vue'
 import {BAlert} from 'bootstrap-vue'
+import VuePaycard from 'vue-paycard'
+
+Vue.use(VuePaycard)
 // import '~bootstrap/scss/bootstrap'
 // import '~bootstrap-steps/scss/bootstrap-steps'
 // import 'vue-form-wizard/dist/vue-form-wizard.min.css'

@@ -103,6 +103,31 @@ export default new Router({
             alias: "/",
             name: "",
             component: () => import("./components/ExpertSeeOrderHistory")
+        }, {
+
+            path: "/exadof",
+            alias: "/",
+            name: "",
+            component: () => import("./components/ExpertAddOrderoffer")
+        },{
+
+            path: "/x",
+            alias: "/",
+            name: "",
+            component: () => import("./components/customerAddOrder")
+        },{
+
+            path: "/y",
+            alias: "/",
+            name: "",
+            component: () => import("./components/CustomerAddComment")
+        },
+        {
+
+            path: "/cc",
+            alias: "/",
+            name: "",
+            component: () => import("./components/payy")
         },
 
     ]

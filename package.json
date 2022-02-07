@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "sass-loader": "^12.4.0",
     "vue": "^2.6.11",
+    "vue-paycard": "^0.7.0",
     "vue-persian-datetime-picker": "^2.10.3"
   },
   "devDependencies": {

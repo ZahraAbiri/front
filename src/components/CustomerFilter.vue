@@ -125,6 +125,7 @@
         <vs-table v-if="num===2"
                   pagination
                   max-items="3"
+
                   dir="rtl"
                   :data="customers"
                   style="background-color: #c6f7ff"

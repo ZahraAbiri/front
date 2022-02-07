@@ -12,15 +12,15 @@
       >
         <template slot="thead" dir="rtl">
 
-          <vs-th sort-key="orderStatus" style="font-size: medium ;background-color: #c6f7ff" dir="rtl">
-            orderStatus
+          <vs-th sort-key="orderproposedPrice" style="font-size: medium ;background-color: #c6f7ff" dir="rtl">
+            orderproposedPrice
           </vs-th>
 
-          <vs-th sort-key="jobDescription" style="font-size: medium ; background-color: #c6f7ff" dir="rtl">
-            jobDescription
+          <vs-th sort-key="description" style="font-size: medium ; background-color: #c6f7ff" dir="rtl">
+            description
           </vs-th>
           <vs-th sort-key="expert.credit" style="font-size: medium ; background-color: #c6f7ff" dir="rtl">
-            add offer
+            add comment
           </vs-th>
 
         </template>
@@ -28,12 +28,12 @@
           <vs-tr :orders="tr" :key="orderid" v-for="(tr, orderid) in order">
             <vs-td style="background-image: linear-gradient(#a9ded5, #5abbf9);font-size: large"
                    dir="rtl">
-              {{ order[orderid].orderStatus }}
+              {{ order[orderid].proposedPrice }}
             </vs-td>
 
             <vs-td style="background-image: linear-gradient(#a9ded5, #5abbf9);;font-size: large"
                    dir="rtl">
-              {{ order[orderid].jobDescription }}
+              {{ order[orderid].jobDescription}}
             </vs-td>
             <vs-td style="background-image: linear-gradient(#a9ded5, #5abbf9);;font-size: large"
                    dir="rtl">
@@ -45,26 +45,19 @@
                           primary
                           color="rgb(59,222,200)"
                           required
-                          placeholder="proposedPrice"
-                          v-model="offerDto.proposedPrice"
-                          label-placeholder="proposedPrice"
+                          placeholder="score"
+                          v-model="commentDto.score"
+                          label-placeholder="description"
                           :maxlength="12"></vs-input>
                 <vs-input type="text"
                           primary
                           color="rgb(59,222,200)"
                           required
                           placeholder="durationOfWork"
-                          v-model="offerDto.durationOfWork"
-                          label-placeholder="durationOfWork"
-                          :maxlength="12"></vs-input> <vs-input type="text"
-                          primary
-                          color="rgb(59,222,200)"
-                          required
-                          placeholder="durationOfWork"
-                          v-model="offerDto.description"
+                          v-model="commentDto.desciption"
                           label-placeholder="description"
                           :maxlength="12"></vs-input>
-                <vs-button @click="saveOffer">add</vs-button>
+                <vs-button @click="saveComment">add</vs-button>
               </vs-popup>
             </vs-td>
 
@@ -83,7 +76,7 @@
 
 <script>
 import OrderDataService from "@/service/OrderDataService";
-import OfferDataService from "@/service/OfferDataService";
+import CommentDataService from "@/service/CommentDataService";
 
 export default {
   name: "orderSeeOrderHistory",
@@ -119,16 +112,16 @@ export default {
         description: '',
         mainService: ''
       },
-      offerDto: {
-        expertEmailAddress: '',
-        orderId: '',
-        registrationDate: '',
-        proposedPrice: '',
-        durationOfWork: '',
-        startTime: '',
-        description: '',
+      commentDto: {
+        Orderid: '',
+        Expertid:'',
+        customerid:'',
+        score:'',
+        desciption:'',
       },
       idexp: '',
+      idcus:'',
+
       expert:
     {
       id: null,
@@ -145,7 +138,7 @@ export default {
           services:'',
     }
   ,
-      offerDtos:[],
+      commentDtos:[],
 orders:[],
     customer: {
       id: null,
@@ -160,9 +153,12 @@ orders:[],
   }, methods: {
     clickee(row) {
       this.exid = row
+      console.log(this.exid+"exid")
     }, exIdget(eid) {
-      this.idexp = eid[0].expert.emailAddress
-      console.log(eid[0].expert.emailAddress + "eid")
+      this.idexp = eid[0].expert.id
+      this.idcus = eid[0].customer.id
+      console.log(eid[0].expert.id + "expert")
+      console.log(eid[0].customer.id + "eid[0].customer.id")
     },
     getorderhis() {
       console.log("get menue")
@@ -171,26 +167,23 @@ orders:[],
         this.orders = response.data;
         console.log(JSON.stringify(response) + "--------")
       });
-    }, saveOffer() {
+    }, saveComment() {
       console.log("errorpppppppppppppp");
-
-      this.offerDto.orderId=this.exid
-      this.offerDto.expertEmailAddress=this.idexp
-
+      this.commentDto.Expertid =this.idexp
+      this.commentDto.customerid =this.idcus
+      this.commentDto.Orderid=this.exid
       var data = {
-        expertEmailAddress:this.offerDto.expertEmailAddress,
-        orderId: this.offerDto.orderId,
-        registrationDate:this.offerDto.registrationDate,
-        proposedPrice:this.offerDto.proposedPrice,
-        durationOfWork:this.offerDto.durationOfWork,
-        startTime:this.offerDto.startTime,
-        description:this.offerDto.description,
+        Orderid:this.commentDto.Orderid,
+        Expertid:this.commentDto.Expertid,
+        customerid:this.commentDto.customerid,
+        score:this.commentDto.score,
+        desciption:this.commentDto.desciption,
+
 
       };
-      console.log(data.firstname + "dllllllllllllllllllllata")
-      OfferDataService.createOffer(data).then(response => {
+      CommentDataService.createComment(data).then(response => {
         console.log("wwwwww")
-        this.offerDtos = response.data;
+        this.commentDtos = response.data;
         console.log(response.data);
 
       })

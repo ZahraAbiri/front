@@ -17,6 +17,7 @@
                         label-placeholder="نام"
                         :maxlength="12"
                 ></vs-input>
+
                 <!--                <h6 v-if="invalidName" style="color:red"></h6>-->
                 <!--                    </div>-->
                 <!--                    <div class="center content-inputs">-->
@@ -57,9 +58,9 @@
 <!--                    </b-collapse>-->
 <!--                </div>-->
 
-                <!--                <h6 v-if="(validEmail || invalidEmail) "-->
-                <!--                >The mail is valid</h6>-->
-                <!--                <h6 v-else style="color: #d33c40">Email Invalid</h6>-->
+                                <h6 v-if="(validEmail || invalidEmail) "
+                                >The mail is valid</h6>
+                                <h6 v-else style="color: #d33c40">Email Invalid</h6>
 
 
                 <!--                    </div>-->

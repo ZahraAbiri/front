@@ -7,11 +7,11 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-    <div class="container">
+    <div class="container" >
       <div class="title">Registration expert</div>
-      <div class="content">
+      <div class="content" >
         <form>
-          <div class="user-details">
+          <div class="user-details" >
             <div class="input-box">
               <span class="details">Name</span>
               <input type="text" v-model="expert.firstname" placeholder="Enter your name" required>
@@ -21,36 +21,22 @@
               <input type="text" v-model="expert.lastname" placeholder="Enter your family" required>
             </div>
             <div class="input-box">
-              <span class="details">emailAddress</span>
-              <input type="text" v-model="expert.emailAddress" placeholder="Enter your username" required>
+              <span class="details" @change="validemailEmail">emailAddress</span>
+              <input type="email" v-model="expert.emailAddress" placeholder="Enter your username" required>
+              <h6 v-if="validemailEmail"
+              ></h6>
+              <h6 v-else style="color: #d33c40">Email Invalid</h6>
             </div>
 <!--            <div class="input-box">-->
 <!--              <span class="details">password</span>-->
 <!--              <input type="text" v-model="expert.password" placeholder="Enter your username" required>-->
+<!--              <h6 v-if="validemailPassword"-->
+<!--              ></h6>-->
+<!--              <h6 v-else style="color: #d33c40">password Invalid</h6>-->
 <!--            </div>-->
-            <div class="input-box">
-              <span class="details">credit</span>
-              <input type="text" v-model="expert.credit" placeholder="Enter your username" required>
-            </div>
-<!--            <div class="input-box">-->
-<!--              <span class="details">personal statuse</span>-->
-<!--              <input type="text" v-model="expert.personStatuse" placeholder="Enter your username" required>-->
-<!--            </div>-->
-            <div class="input-box">
-              <span class="details">score</span>
-              <input type="text" v-model="expert.score" placeholder="Enter your username" required>
-            </div>
-<!--            <div class="input-box">-->
-<!--              <span class="details">role</span>-->
-<!--              <input type="text" v-model="expert.role" placeholder="Enter your username" required>-->
-<!--            </div>-->
-            <div class="input-box">
-              <span class="details">registrationDate</span>
-              <date-picker v-model="expert.registrationDate" format="jYYYY-jMM-jDD" display-format="jYYYY-jMM-jDD" required></date-picker>
-            </div>
+
             <div class="input-box">
               <span class="details">photo upload</span>
-<!--              <ImgSave3 @changephoto="ChangeImg"  v-model="expert.photo" required></ImgSave3>-->
               <div class="row">
                 <div class="col-8">
                   <label class="btn btn-default p-0">
@@ -62,6 +48,7 @@
                     />
                   </label>
                 </div>
+<!--               -->
               </div>
             </div>
           </div>
@@ -73,25 +60,33 @@
     </div>
     </body>
     </html>
-
+    <div v-if="submitted">
+      <h4>کاربر با موفقیت اضافه شد !</h4>
+      <vs-button dir="ltr"
+                 color="pink"
+                 :active=1
+                 @click="newExpert">
+        اضافه کردن
+      </vs-button>
+    </div>
 
   </div>
 </template>
 <script>
 import ExpertDataService from "@/service/ExpertDataService";
 // import ImgSave3 from '../components/ImgSave3'
-import VuePersianDatetimePicker from 'vue-persian-datetime-picker';
+
 export default {
   name: 'expertRegister',
-  components:{
+  components: {
     // ImgSave3,
-    datePicker: VuePersianDatetimePicker
+
   },
   data() {
     return {
       value: 54,
+      // reg:/^\w+([[.]-]?\w+)*@\w+([[.]-]?\w+)*(\.\w{2,3})+$/,
       currentStep: null,
-
       message: '',
       currentImage: undefined,
       previewImage: undefined,
@@ -99,6 +94,8 @@ export default {
       imageInfoes: [],
       experts: [],
       bt: [],
+      submitted: false,
+      imageData: '',
       expert: {
         id: null,
         firstname: "",
@@ -106,16 +103,20 @@ export default {
         emailAddress: "",
         password: '',
         personStatuse: '',
-        registrationDate:null,
+        registrationDate: null,
         credit: '',
-        photo:Array,
-        score:null,
-        role:null,
+        photo:[],
+        score: null,
+        role: null,
         // services:'',
 
       },
     }
-  },methods:{
+  }, methods: {
+    // isEmailValid: function() {
+    //   return (this.expert.emailAddress == "")? "" : (this.reg.test(this.expert.emailAddress)) ? 'has-success' : 'has-error';
+    // },
+
     // ChangeImg(mes) {
     //   console.log(mes);
     //   console.log(mes + "change 88photo");
@@ -141,33 +142,35 @@ export default {
           for (var i = 0; i < array.length; i++) {
             filebyteArray.push(array[i])
           }
-        // return filebyteArray;
-        //   this.expert.photo=filebyteArray
-          // console.log(this.expert.photo)
-          this.bt=filebyteArray
-          console.log(filebyteArray)
+
+
+
+         // console.log( this.expert.photo+"kkkkkkkkkk")
+
         }
 
       }
 
       // this.$emit('changeImage', filebyteArray)
-
+      this.expert.photo= filebyteArray
     },
     saveexpert() {
-      this.selectImage();
-      console.log()
-      console.log("errorpppppppppppppp");
+      // this.selectImage();
+      // console.log()
+      // console.log("err/orpppppppppppppp");
+      // this.expert.photo = this.selectImage()
 
+      console.log(this.expert.photo + " savavava")
       var data = {
         firstname: this.expert.firstname,
         lastname: this.expert.lastname,
         emailAddress: this.expert.emailAddress,
-        // password: this.expert.password,
+        password: this.expert.password,
         personStatuse: 'NEW',
         registrationDate: this.expert.registrationDate,
         credit: this.expert.credit,
-        photo:this.expert.photo,
-        role:'EXPERT',
+        photo: this.expert.photo,
+        role: 'EXPERT',
         score: this.expert.score,
         // services: this.expert.services
 
@@ -177,11 +180,29 @@ export default {
         console.log("wwwwww")
         this.expert.id = response.data.id;
         console.log(response.data);
+        this.submitted = true;
 
       })
           .catch(e => {
             console.log(e);
           });
+    }, newExpert() {
+      this.submitted = false;
+      this.expert = {};
+    }
+  }, computed: {
+    validemailEmail() {
+      if (!/^\w+([[.]-]?\w+)*@\w+([[.]-]?\w+)*(\.\w{2,3})+$/.test(String(this.expert.emailAddress))) {
+        return false
+      } else {
+        return true
+      }
+    }, validemailPassword() {
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/.test(String(this.expert.password))) {
+        return false
+      } else {
+        return true
+      }
     },
   }
 }
@@ -358,5 +379,6 @@ form .button input:hover {
     flex-direction: column;
   }
 }
+
 
 </style>

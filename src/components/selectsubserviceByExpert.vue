@@ -8,9 +8,9 @@
         <vs-th>
           family
         </vs-th>
-<!--        <vs-th>-->
-<!--          description-->
-<!--        </vs-th>-->
+        <!--        <vs-th>-->
+        <!--          description-->
+        <!--        </vs-th>-->
         <vs-th>
           chose subservice
         </vs-th>
@@ -158,7 +158,8 @@ export default {
       role: null,
       services: '',
     },
-    sid:'',
+    flag:false,
+    sid: '',
     subservices: [], num: '',
     exid: '',
   }), methods: {
@@ -167,20 +168,19 @@ export default {
       this.ne = row[0].name
       this.bp = row[0].basePrice
       this.dc = row[0].description
-      console.log(row[0].id+"[[[[[[[[[[")
+      console.log(row[0].id + "[[[[[[[[[[")
       console.log(row[0].name)
       console.log(row[0].basePrice)
       console.log(row[0].description)
     }, clicke(row) {
       this.num = row
 
-      console.log(row+"pppppppppp")
+      console.log(row + "pppppppppp")
 
     },
     getAllsubservice() {
       SubServiceDataService.getSubService().then((response) => {
         this.subservices = response.data;
-        // console.log(JSON.stringify(response) + "--------")
       });
     },
     getAllexpert() {
@@ -190,22 +190,21 @@ export default {
       });
     }, showInfo(subservice) {
       console.log(subservice.id + " " + subservice.name);
-      this.sid =subservice.id,
-      this.ne = subservice.name
+      this.sid = subservice.id,
+          this.ne = subservice.name
       this.bp = subservice.basePrice
       this.dc = subservice.description
 
       this.flag = true;
 
 
-
     },
     updatecustomer() {
       this.expert.services = [{
-        id:this.sid,
+        id: this.sid,
         name: this.ne,
-        basePrice:this.bp,
-        description:this.dc
+        basePrice: this.bp,
+        description: this.dc
       }]
       var data = {
         services: this.expert.services
@@ -215,13 +214,15 @@ export default {
           .then(response => {
             console.log(response.data.date + " in update mode in base64");
 
-            this.message = 'The customer was updated successfully!';
+            this.message = ' was updated successfully!';
             console.log("The customer was updated successfully");
             window.location.reload();//reload page
+            alert(this.message)
             return this.editing;
 
 
           }).catch(e => {
+        alert(e)
         console.log(e);
       });
 
