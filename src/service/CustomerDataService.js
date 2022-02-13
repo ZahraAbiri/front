@@ -14,6 +14,8 @@ class CustomerDataService {
 
     createCustomer(data) {
         return http.post(`cus/cu`, data);
+    }  createCustomers(data) {
+        return http.post(`us/register`, data);
     }
 
 

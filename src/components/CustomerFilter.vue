@@ -278,6 +278,8 @@ export default {
         if (this.customersFilter() !== this.customer.firstname)
           var w = this.customersRole();
         w.forEach(w => this.customersa.push(w));
+      }else {
+        this.showAll();
       }
       this.num = 1;
       return this.customersa = [...new Set(this.customersa)];

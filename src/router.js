@@ -128,6 +128,30 @@ export default new Router({
             alias: "/",
             name: "",
             component: () => import("./components/payy")
+        },{
+
+            path: "/llog",
+            alias: "/",
+            name: "",
+            component: () => import("./components/llog")
+        },{
+
+            path: "/h",
+            alias: "/",
+            name: "",
+            component: () => import("./components/Home")
+        },{
+
+            path: "/pa",
+            alias: "/",
+            name: "",
+            component: () => import("./components/paypage")
+        },{
+
+            path: "/error",
+            alias: "/",
+            name: "",
+            component: () => import("./components/error")
         },
 
     ]

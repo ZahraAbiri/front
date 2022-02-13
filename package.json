@@ -26,7 +26,8 @@
     "vue-router": "^3.5.3",
     "vue-sidebar-menu": "^4.8.1",
     "vue-template-compiler": "^2.6.11",
-    "vuesax": "^3.12.2"
+    "vuesax": "^3.12.2",
+    "vuex": "^4.0.2"
   },
   "eslintConfig": {
     "root": true,

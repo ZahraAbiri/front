@@ -45,7 +45,7 @@ import {BCard} from 'bootstrap-vue'
 import {BButton} from 'bootstrap-vue'
 import {BAlert} from 'bootstrap-vue'
 import VuePaycard from 'vue-paycard'
-
+// import store from './store'
 Vue.use(VuePaycard)
 // import '~bootstrap/scss/bootstrap'
 // import '~bootstrap-steps/scss/bootstrap-steps'
@@ -99,6 +99,7 @@ Vue.use(Vuesax, {
 Vue.config.productionTip = false
 
 new Vue({
+    // store,
     router,
     render: h => h(App),
 }).$mount('#app')

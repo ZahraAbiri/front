@@ -161,7 +161,7 @@ export default {
         credit: this.customer.credit
       };
       console.log(data.firstname + "data")
-      CustomerDataService.createCustomer(data).then(response => {
+      CustomerDataService.createCustomers(data).then(response => {
         console.log("wwwwww")
         this.customer.id = response.data.id;
         console.log(response.data);
